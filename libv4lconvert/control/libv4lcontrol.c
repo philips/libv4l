@@ -29,6 +29,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/sysmacros.h>
+#undef minor
 #include <pwd.h>
 #include "libv4lcontrol.h"
 #include "libv4lcontrol-priv.h"
@@ -257,7 +259,7 @@ static void v4lcontrol_init_flags(struct v4lcontrol_data *data)
     fclose(f);
 
     if (s && sscanf(buf, "%*d:%d%c", &minor, &c) == 2 && c == '\n' &&
-	minor == minor(st.st_rdev))
+	minor == gnu_dev_minor(st.st_rdev))
       break;
   }
   if (i == 256)
